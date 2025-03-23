@@ -17,8 +17,7 @@ public class DraggableItem : MonoBehaviour
     public float weight;
 
     [Header("Movements")]
-    [SerializeField] private float moveSpeed = 5f;
-    
+    [SerializeField] private float moveSpeed = 5f;   
     [SerializeField] private float yThreshold;
 
     private Rigidbody rb;
