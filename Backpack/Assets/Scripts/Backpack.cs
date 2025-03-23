@@ -31,6 +31,9 @@ public class Backpack : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI weightText;
 
+    [Header("save Manager")]
+    [SerializeField] private SaveManager saveManager;
+
     private float weight;
 
     private List<DraggableItem> storedItems = new List<DraggableItem>();
@@ -44,6 +47,44 @@ public class Backpack : MonoBehaviour
         SetParentWithoutMoving(item.gameObject.transform, backpackParent.transform);
        // StartCoroutine(SendPostRequest(item.identifier.ToString(), "Add Item", item.itemType.ToString()));
         addEvent.Invoke();
+
+        switch (item.itemType)
+        {
+            case DraggableItem.ItemType.flask:
+                Color newColorFlask = flaskImage.color;
+                newColorFlask.a = 1;
+                flaskImage.color = newColorFlask;
+                saveManager.SetFlaskStatus(true);
+                return flaskPosition;
+
+            case DraggableItem.ItemType.sleepingBag:
+                Color newColorBag = sleepingBagImage.color;
+                newColorBag.a = 1;
+                sleepingBagImage.color = newColorBag;
+                saveManager.SetSleepingBagStatus(true);
+                return sleepingBagPosition;
+
+            case DraggableItem.ItemType.matchBox:
+                Color newColorBox = matchBoxImage.color;
+                newColorBox.a = 1;
+                matchBoxImage.color = newColorBox;
+                saveManager.SetMatchBoxStatus(true);
+                return matchBoxPosition;
+
+            default:
+                Debug.Log("Unknown Item");
+                return null;
+        }
+        
+
+    }
+
+    public Transform AddItemInstant(DraggableItem item) // for saved games
+    {
+        weight = weight + item.weight;
+        UpdateTextUI();
+        storedItems.Add(item);
+        SetParentWithoutMoving(item.gameObject.transform, backpackParent.transform);
 
         switch (item.itemType)
         {
@@ -69,9 +110,11 @@ public class Backpack : MonoBehaviour
                 Debug.Log("Unknown Item");
                 return null;
         }
-        
+
 
     }
+
+
 
     #endregion
 
@@ -81,8 +124,9 @@ public class Backpack : MonoBehaviour
         DraggableItem removeItem = storedItems.Find(item => item.itemType == DraggableItem.ItemType.flask);
 
         if (removeItem != null)
-        {
+        {           
             RemoveItem(removeItem);
+            saveManager.SetFlaskStatus(false);
         }
     }
 
@@ -93,6 +137,7 @@ public class Backpack : MonoBehaviour
         if (removeItem != null)
         {
             RemoveItem(removeItem);
+            saveManager.SetSleepingBagStatus(false);
         }
     }
 
@@ -103,6 +148,7 @@ public class Backpack : MonoBehaviour
         if (removeItem != null)
         {
             RemoveItem(removeItem);
+            saveManager.SetMatchBoxStatus(false);
         }
     }
 

@@ -28,7 +28,7 @@ public class DraggableItem : MonoBehaviour
     
     private Plane dragPlane;
 
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody>();
         coll = GetComponent<MeshCollider>();
@@ -101,6 +101,18 @@ public class DraggableItem : MonoBehaviour
         coll.enabled = false;
         StartCoroutine(SmoothMoveTo(placement));
         StartCoroutine(SmoothRotateTo(placement));
+    }
+
+    public void MoveToBackpackInstant(Transform placement) // for saved games
+    {
+        isDragging = false;
+        rb.useGravity = false;
+        rb.isKinematic = true;
+        rb.constraints = RigidbodyConstraints.None;
+        rb.velocity = Vector3.zero;
+        coll.enabled = false;
+        transform.position = placement.position;
+        transform.rotation = placement.rotation;
     }
 
     private IEnumerator SmoothMoveTo(Transform placement)
