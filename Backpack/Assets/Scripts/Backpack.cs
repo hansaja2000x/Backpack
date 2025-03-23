@@ -45,8 +45,11 @@ public class Backpack : MonoBehaviour
         UpdateTextUI();
         storedItems.Add(item);
         SetParentWithoutMoving(item.gameObject.transform, backpackParent.transform);
-       // StartCoroutine(SendPostRequest(item.identifier.ToString(), "Add Item", item.itemType.ToString()));
-        addEvent.Invoke();
+        StartCoroutine(SendPostRequest(item.identifier.ToString(), "Add Item", item.itemType.ToString()));
+        if (addEvent != null)
+        {
+            addEvent.Invoke();
+        }
 
         switch (item.itemType)
         {
@@ -158,8 +161,11 @@ public class Backpack : MonoBehaviour
         UpdateTextUI();
         storedItems.Remove(item);
         SetParentWithoutMoving(item.gameObject.transform, outsideParent.transform);
-       // StartCoroutine(SendPostRequest(item.identifier.ToString(), "Remove Item", item.itemType.ToString()));
-        removeEvent.Invoke();
+        StartCoroutine(SendPostRequest(item.identifier.ToString(), "Remove Item", item.itemType.ToString()));
+        if (removeEvent != null)
+        {
+            removeEvent.Invoke();
+        }
         Transform removePosition;
         switch (item.itemType)
         {
