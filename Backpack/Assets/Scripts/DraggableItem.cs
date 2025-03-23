@@ -140,7 +140,7 @@ public class DraggableItem : MonoBehaviour
     {
         while (Vector3.Distance(transform.position, placement.position) > 0.01f)
         {
-            transform.position = Vector3.Lerp(transform.position, placement.position,1.5f* moveSpeed * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, placement.position, moveSpeed * Time.deltaTime);
 
             yield return null;
         }
